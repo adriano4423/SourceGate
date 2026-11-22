@@ -1,2 +1,53 @@
-# SourceGate
-Supplier admission assessment: six-dimensional scoring, evidence verification, clarifications and project deck.
+# SourceGate｜供应商准入审核
+
+为“项目采购战略寻源-专家计划”创建的独立项目。参考 Maple Ledger 的签署声明、证据完整性、独立核验和确定性判定原则，将其用于六维供应商准入。未复制参考项目代码。
+
+## 交付
+
+- `dist/index.html`：审核 App（7 个视图）
+- `dist/deck.html`：15 页中文说明 deck，方向键翻页，可打印为 PDF
+- `dist/engine.js`：与界面分离的确定性评分引擎
+- `docs/SCORING_STANDARD.md`：完整 18 项指标、阈值、证据要求
+- `docs/PROJECT_PLAN.md`：项目章程、核验工作流、角色和生产实施计划
+- `tests/engine.test.cjs`：评分边界与密码学校验
+
+## 运行
+
+无构建和依赖安装。Node 18+ 可运行测试：
+
+```sh
+node tests/engine.test.cjs
+```
+
+用任意静态服务器提供 `dist`，例如 `python3 -m http.server 8080 --directory dist`，访问 `http://localhost:8080`。电子签署需要 HTTPS 或 localhost 安全上下文。字体使用在线字体服务，离线自动回退至系统字体。
+
+## 建议演示路径
+
+1. 选择虚构 Northstar 案例，保存申报。近三年财务字段自动计算最低流动比率、最低权益资产比和正经营现金流年数。
+2. 在证据页为六个维度分别上传完整证据包。附件实际保存在当前浏览器 IndexedDB，生成 SHA-256 摘要。
+3. 在申报页勾选演示声明，签署并提交。浏览器实际生成 ECDSA P-256 密钥并签署快照。私钥不保存。
+4. 在核验页复核签名，记录人工身份授权及证据核验。演示核验不等于第三方认证。
+5. 提出澄清，保存回复，由审核操作者确认关闭。
+6. 查看申报分与核实分，满足条件后记录审批。导出 JSON 或打印报告。
+7. 修改申报或评分规则：签名与审批失效，必须重新签署。
+
+## 必须理解的边界
+
+这是可工作的本地数据原型，不是已完成认证的企业生产系统。默认企业与数据均为虚构案例。首次打开没有预设真实核验证据，也不会给出虚假的“已认证”状态。
+
+- 签名证明密钥与内容的对应关系；未绑定外部认证的自然人或企业身份。
+- 文件哈希证明完整性，不证明文件真实、原始签发机构或财务数字准确。
+- 真实性由人工核验记录，未接入商业登记、审计师、发证机构或电子签 API。
+- 当前为单一浏览器工作空间，无供应商／评审人实际登录与权限隔离。
+- localStorage/IndexedDB 可被本地操作者修改；哈希日志不是服务器不可变审计。
+- 评分输入、已确认红线、证据范围由人工负责；未接入 OCR/LLM，不虚构 AI 审阅。
+- 不向供应商发送通知，不创建真实合同，不写入 ERP，不自动录入正式供应商库。
+- 建议先使用虚构或脱敏资料。正式应用前完成后端、权限、受信签署、文件安全和审批控制。
+
+## 参考来源
+
+- https://github.com/MtsYama/Maple_Ledger-Team-TrueNorth-Red_Team_Hackathon
+- https://maple-ledger-team-true-north-red-te.vercel.app/
+- https://deck.ashtonshu.page/competition/2026-05-30-redteam-hackathon/cn
+
+阅读日期：2026-11-22。权重及阈值为本项目建议，未宣称是行业或监管标准。

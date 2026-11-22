@@ -1,0 +1,8 @@
+# Local hosting identity and generated archives
+.openai/
+deliverables/*.zip
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
